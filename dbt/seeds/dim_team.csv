@@ -1,0 +1,46 @@
+team_key,league,team_name,nba_tricode,nba_team_id,espn_abbrev,espn_team_id
+nba_ATL,nba,Atlanta Hawks,ATL,1610612737,ATL,1
+nba_BKN,nba,Brooklyn Nets,BKN,1610612751,BKN,17
+nba_BOS,nba,Boston Celtics,BOS,1610612738,BOS,2
+nba_CHA,nba,Charlotte Hornets,CHA,1610612766,CHA,30
+nba_CHI,nba,Chicago Bulls,CHI,1610612741,CHI,4
+nba_CLE,nba,Cleveland Cavaliers,CLE,1610612739,CLE,5
+nba_DAL,nba,Dallas Mavericks,DAL,1610612742,DAL,6
+nba_DEN,nba,Denver Nuggets,DEN,1610612743,DEN,7
+nba_DET,nba,Detroit Pistons,DET,1610612765,DET,8
+nba_GSW,nba,Golden State Warriors,GSW,1610612744,GS,9
+nba_HOU,nba,Houston Rockets,HOU,1610612745,HOU,10
+nba_IND,nba,Indiana Pacers,IND,1610612754,IND,11
+nba_LAC,nba,LA Clippers,LAC,1610612746,LAC,12
+nba_LAL,nba,Los Angeles Lakers,LAL,1610612747,LAL,13
+nba_MEM,nba,Memphis Grizzlies,MEM,1610612763,MEM,29
+nba_MIA,nba,Miami Heat,MIA,1610612748,MIA,14
+nba_MIL,nba,Milwaukee Bucks,MIL,1610612749,MIL,15
+nba_MIN,nba,Minnesota Timberwolves,MIN,1610612750,MIN,16
+nba_NOP,nba,New Orleans Pelicans,NOP,1610612740,NO,3
+nba_NYK,nba,New York Knicks,NYK,1610612752,NY,18
+nba_OKC,nba,Oklahoma City Thunder,OKC,1610612760,OKC,25
+nba_ORL,nba,Orlando Magic,ORL,1610612753,ORL,19
+nba_PHI,nba,Philadelphia 76ers,PHI,1610612755,PHI,20
+nba_PHX,nba,Phoenix Suns,PHX,1610612756,PHX,21
+nba_POR,nba,Portland Trail Blazers,POR,1610612757,POR,22
+nba_SAC,nba,Sacramento Kings,SAC,1610612758,SAC,23
+nba_SAS,nba,San Antonio Spurs,SAS,1610612759,SA,24
+nba_TOR,nba,Toronto Raptors,TOR,1610612761,TOR,28
+nba_UTA,nba,Utah Jazz,UTA,1610612762,UTAH,26
+nba_WAS,nba,Washington Wizards,WAS,1610612764,WSH,27
+wnba_ATL,wnba,Atlanta Dream,ATL,1611661330,ATL,20
+wnba_CHI,wnba,Chicago Sky,CHI,1611661329,CHI,19
+wnba_CON,wnba,Connecticut Sun,CON,1611661323,CON,18
+wnba_DAL,wnba,Dallas Wings,DAL,1611661321,DAL,3
+wnba_GSV,wnba,Golden State Valkyries,GSV,1611661331,GS,129689
+wnba_IND,wnba,Indiana Fever,IND,1611661325,IND,5
+wnba_LVA,wnba,Las Vegas Aces,LVA,1611661319,LV,17
+wnba_LAS,wnba,Los Angeles Sparks,LAS,1611661320,LA,6
+wnba_MIN,wnba,Minnesota Lynx,MIN,1611661324,MIN,8
+wnba_NYL,wnba,New York Liberty,NYL,1611661313,NY,9
+wnba_PHX,wnba,Phoenix Mercury,PHX,1611661317,PHX,11
+wnba_PDX,wnba,Portland Fire,PDX,1611661327,POR,132052
+wnba_SEA,wnba,Seattle Storm,SEA,1611661328,SEA,14
+wnba_TOR,wnba,Toronto Tempo,TOR,1611661332,TOR,131935
+wnba_WAS,wnba,Washington Mystics,WAS,1611661322,WSH,16

@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: bronze_latest
+    description: Current payload per (source, game).
+    data_tests:
+      - unique_combination: {arguments: {columns: [source, game_id]}}
+
+  - name: bronze_payload_history
+    description: >
+      Every payload version per (source, game) with valid_from / valid_to; how late stat
+      corrections are recorded.
+    data_tests:
+      - unique_combination: {arguments: {columns: [source, game_id, valid_from]}}
+
+  - name: stg_events
+    description: >
+      Every source's shots, free throws, rebounds, turnovers and fouls in one schema.
+      clock_tenths is tenths of a second left in the period; x_ft/y_ft are half-court feet with
+      the basket at (0, 0) and y pointing to half court.
+    data_tests:
+      - unique_combination: {arguments: {columns: [source, source_event_id]}}
+    columns:
+      - name: game_key
+        data_tests:
+          - not_null
+          - relationships: {arguments: {to: ref('game_xwalk'), field: game_key}}
+      - name: event_class
+        data_tests:
+          - accepted_values: {arguments: {values: [shot, free_throw, rebound, turnover, foul]}}
+      - name: clock_tenths
+        data_tests: [not_null]
+      - name: team_key
+        data_tests:
+          - not_null
+          - relationships: {arguments: {to: ref('dim_team'), field: team_key}}
+      - name: player_key
+        data_tests:
+          - relationships: {arguments: {to: ref('player_xwalk'), field: player_key}}

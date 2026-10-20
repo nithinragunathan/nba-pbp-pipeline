@@ -1,0 +1,59 @@
+# Reconciliation report
+
+
+## Games
+
+| league | games | official | espn |
+|---|---|---|---|
+| nba | 1231 | 1230 | 1231 |
+| wnba | 329 | 0 | 329 |
+
+## Official feed vs ESPN agreement by league and event class
+
+The official feed is NBA Stats (NBA only). The WNBA is ESPN only, so every WNBA event is single-source.
+
+| league | event_class | official_events | espn_events | matched | official_match_rate | espn_match_rate | official_only | espn_only | player_disagree | result_disagree |
+|---|---|---|---|---|---|---|---|---|---|---|
+| nba | foul | 48812.0 | 48806.0 | 48805.0 | 0.9999 | 1.0 | 7.0 | 1.0 | 2.0 | 0.0 |
+| nba | free_throw | 57768.0 | 57767.0 | 57766.0 | 1.0 | 1.0 | 2.0 | 1.0 | 6.0 | 1.0 |
+| nba | rebound | 129577.0 | 129588.0 | 129547.0 | 0.9998 | 0.9997 | 30.0 | 41.0 | 57.0 | 0.0 |
+| nba | shot | 220258.0 | 220269.0 | 220241.0 | 0.9999 | 0.9999 | 17.0 | 28.0 | 25.0 | 0.0 |
+| nba | turnover | 35695.0 | 35680.0 | 35678.0 | 0.9995 | 0.9999 | 17.0 | 2.0 | 22.0 | 0.0 |
+| nba | all | 492110.0 | 492110.0 | 492037.0 | 0.9999 | 0.9999 | 73.0 | 73.0 | 112.0 | 1.0 |
+
+## Games with the most disagreements
+
+| game_key | official_only | espn_only | player_disagree | result_disagree |
+|---|---|---|---|---|
+| nba_20251115_DEN_at_MIN | 0 | 17 | 0 | 0 |
+| nba_20260120_LAC_at_CHI | 11 | 0 | 0 | 0 |
+| nba_20251117_OKC_at_NOP | 5 | 0 | 0 | 0 |
+| nba_20260127_BKN_at_PHX | 2 | 2 | 1 | 0 |
+| nba_20251108_CHI_at_CLE | 2 | 2 | 0 | 0 |
+| nba_20251122_ATL_at_NOP | 0 | 3 | 1 | 0 |
+| nba_20251124_DAL_at_MIA | 1 | 2 | 1 | 0 |
+| nba_20251202_POR_at_TOR | 2 | 0 | 2 | 0 |
+| nba_20251226_LAC_at_POR | 1 | 2 | 1 | 0 |
+| nba_20251021_HOU_at_OKC | 2 | 1 | 0 | 0 |
+
+## Known source issues (reviewed, excluded from tests)
+
+| issue_id | source | game_key | test_name | note |
+|---|---|---|---|---|
+| 1 | espn | nba_20251107_CLE_at_WAS | assert_made_points_equal_final_score | Q2 8:15: ESPN says 'Tre Johnson makes free throw 1 of 2' but its running score does not move; NBA says MISS. ESPN header final is 115 (agrees with the made flag), both feeds' running scores end 114 (agree with NBA). |
+| 2 | espn | nba_20251107_CLE_at_WAS | assert_pbp_final_matches_espn_header | Same free throw as issue 1. |
+| 3 | espn | nba_20251028_NYK_at_MIL | assert_made_points_equal_final_score | ESPN's running score ends with NYK at 110. Its made baskets, its header final and the NBA feed all give 111, and its events match NBA's play for play. Only the running score is short. |
+| 4 | espn | nba_20251205_PHI_at_MIL | assert_made_points_equal_final_score | ESPN's running score ends with MIL at 99. Its made baskets, its header final and the NBA feed all give 101, and its events match NBA's play for play. |
+| 5 | espn | nba_20251218_LAL_at_UTA | assert_made_points_equal_final_score | ESPN's running score ends with LAL at 141. Its made baskets, its header final and the NBA feed all give 143, and its events match NBA's play for play. |
+| 6 | espn | nba_20251225_MIN_at_DEN | assert_made_points_equal_final_score | ESPN's running score ends with DEN at 141 (after OT). Its made baskets, its header final and the NBA feed all give 142, and its events match NBA's play for play. |
+| 7 | espn | nba_20260331_DAL_at_MIL | assert_made_points_equal_final_score | ESPN's running score ends with DAL at 96. Its made baskets, its header final and the NBA feed all give 99, and its events match NBA's play for play. |
+| 8 | espn | nba_20260405_MEM_at_MIL | assert_made_points_equal_final_score | ESPN's running score ends with MIL at 129. Its made baskets, its header final and the NBA feed all give 131, and its events match NBA's play for play. |
+| 9 | espn | wnba_20260509_CHI_at_PDX | assert_made_points_equal_final_score | ESPN's running score ends with PDX at 81. Its made baskets and its header final give 83. |
+| 10 | espn | wnba_20260602_LVA_at_LAS | assert_made_points_equal_final_score | ESPN's running score ends with LAS at 67. Its made baskets and its header final give 69. |
+| 11 | espn | nba_20251115_DEN_at_MIN | assert_made_points_equal_final_score | Q3: ESPN repeats plays with shifted clocks (Randle layup at 7:14 and 7:12, Edwards layup at 32.5 and 14.5, Bruce Brown free throw 1 of 2 twice at 3:20), adding 3 shots and 4 points per team. Its running score ignores them and matches NBA (123-112). |
+| 12 | espn | nba_20251115_DEN_at_MIN | assert_shot_counts_within_tolerance | Same repeated Q3 plays as issue 11: ESPN has 3 more attempts than NBA for each team. |
+| 13 | espn | nba_20251117_OKC_at_NOP | assert_shot_counts_within_tolerance | Q1: ESPN is missing three OKC attempts in the opening minute (Dort missed 3PT at 11:43, made 3PTs at 11:38 and 11:10), so its plays end OKC 120. Its header final and the NBA feed give 126. |
+| 14 | espn | nba_20260120_LAC_at_CHI | assert_shot_counts_within_tolerance | Q4: ESPN's plays stop at 14.4 and are missing four made field goals (Niederhauser layup at 7:17, White 3PT at 7:12, Terry 3PT at 1:05, Carter 3PT at 0:33), so its plays end 129-107. Its header final and the NBA feed give 138-110. |
+| 15 | espn | nba_20260120_LAC_at_CHI | assert_no_unexpected_null_player_key | Q4 1:46: ESPN logs 'makes shot' with no player, its 'No Shot (Default Shot)' type. NBA has T. Washington Jr. running dunk at the same time. |
+| 16 | espn | nba_20251115_DEN_at_MIN | assert_unified_points_equal_final_score | ESPN's repeated Q3 plays (issue 11) have no NBA counterpart, so they enter fct_shots as ESPN-only shots and add 8 points. NBA's 123-112 is the real final. |
+| 17 | espn | nba_20251115_DEN_at_MIN | assert_possession_points_equal_final_score | ESPN's repeated Q3 plays (issue 11) are placed in possessions as ESPN-only shots, adding 3 points to the possessions' total. |

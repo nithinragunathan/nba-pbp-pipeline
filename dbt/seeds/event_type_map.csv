@@ -1,0 +1,162 @@
+source,source_type,source_type_text,event_class
+nba,2pt,2pt,shot
+nba,3pt,3pt,shot
+nba,freethrow,freethrow,free_throw
+nba,rebound,rebound,rebound
+nba,turnover,turnover,turnover
+nba,foul:personal,foul:personal,foul
+nba,foul:offensive,foul:offensive,foul
+nba,foul:technical,foul:technical,ignore
+nba,heave,heave,shot
+nba,block,block,ignore
+nba,steal,steal,ignore
+nba,ejection,ejection,ignore
+nba,game,game,ignore
+nba,jumpball,jumpball,ignore
+nba,period,period,ignore
+nba,substitution,substitution,ignore
+nba,timeout,timeout,ignore
+nba,violation,violation,ignore
+espn,8,Delay of Game,ignore
+espn,9,Defensive Goaltending,ignore
+espn,10,Lane,ignore
+espn,12,Kicked Ball,ignore
+espn,16,Full Timeout,ignore
+espn,22,Personal Take Foul,foul
+espn,24,Offensive Charge,foul
+espn,28,Delay Technical,ignore
+espn,29,Defensive 3-Seconds Technical,ignore
+espn,30,Double Technical Foul,ignore
+espn,31,Flagrant Foul Type 2,foul
+espn,32,Flagrant Foul Type 1,foul
+espn,33,Hanging Technical Foul,ignore
+espn,35,Technical Foul,ignore
+espn,40,Away from Play Foul,foul
+espn,42,Offensive Foul,foul
+espn,43,Loose Ball Foul,foul
+espn,44,Shooting Foul,foul
+espn,45,Personal Foul,foul
+espn,48,Flopping Technical,ignore
+espn,61,No Turnover,turnover
+espn,62,Bad Pass Turnover,turnover
+espn,63,Lost Ball Turnover,turnover
+espn,64,Traveling,turnover
+espn,65,Double Dribble Turnover,turnover
+espn,66,Disc Dribble Turnover,turnover
+espn,67,3-Second Turnover,turnover
+espn,68,5-Second Turnover,turnover
+espn,69,8-Second Turnover,turnover
+espn,70,Shot Clock Turnover,turnover
+espn,71,Inbound Turnover,turnover
+espn,72,Back Court Turnover,turnover
+espn,73,Offensive Goaltending Turnover,turnover
+espn,74,Lane Violation Turnover,turnover
+espn,76,Kicked Ball Turnover,turnover
+espn,78,Palming Turnover,turnover
+espn,84,Offensive Foul Turnover,turnover
+espn,86,Out of Bounds - Step Turnover,turnover
+espn,87,Out of Bounds - Lost Ball Turnover,turnover
+espn,90,Out of Bounds - Bad Pass Turnover,turnover
+espn,92,Jump Shot,shot
+espn,93,Hook Shot,shot
+espn,94,Tip Shot,shot
+espn,95,Layup Shot,shot
+espn,96,Dunk Shot,shot
+espn,97,Free Throw - 1 of 1,free_throw
+espn,98,Free Throw - 1 of 2,free_throw
+espn,99,Free Throw - 2 of 2,free_throw
+espn,100,Free Throw - 1 of 3,free_throw
+espn,101,Free Throw - 2 of 3,free_throw
+espn,102,Free Throw - 3 of 3,free_throw
+espn,103,Free Throw - Technical,free_throw
+espn,104,Free Throw - Flagrant 1 of 2,free_throw
+espn,105,Free Throw - Flagrant 2 of 2,free_throw
+espn,106,Free Throw - Flagrant 1 of 1,free_throw
+espn,109,Running Layup Shot,shot
+espn,110,Driving Layup Shot,shot
+espn,111,Alley Oop Layup Shot,shot
+espn,112,Reverse Layup Shot,shot
+espn,113,Running Jump Shot,shot
+espn,114,Turnaround Jump Shot,shot
+espn,115,Driving Dunk Shot,shot
+espn,116,Running Dunk Shot,shot
+espn,117,Reverse Dunk Shot,shot
+espn,118,Alley Oop Dunk Shot,shot
+espn,119,Driving Hook Shot,shot
+espn,120,Turnaround Hook Shot,shot
+espn,121,Fade Away Jump Shot,shot
+espn,122,Jump Shot Bank,shot
+espn,123,Hook Shot Bank,shot
+espn,124,Finger Roll Layup,shot
+espn,125,Layup Shot Putback,shot
+espn,126,Layup Driving Reverse,shot
+espn,127,Layup Running Reverse,shot
+espn,128,Driving Finger Roll Layup,shot
+espn,129,Running Finger Roll Layup,shot
+espn,130,Floating Jump Shot,shot
+espn,131,Pullup Jump Shot,shot
+espn,132,Step Back Jump Shot,shot
+espn,133,Pullup Bank Jump Shot,shot
+espn,134,Driving Jump Shot Bank,shot
+espn,135,Fade Away Bank Jump Shot,shot
+espn,136,Turnaround Bank Jump Shot,shot
+espn,137,Turnaround Fade Away Jump Shot,shot
+espn,138,Putback Dunk Shot,shot
+espn,139,Hook Driving Bank,shot
+espn,140,Hook Turnaround Bank,shot
+espn,141,Cutting Layup Shot,shot
+espn,142,Cutting Finger Roll Layup Shot,shot
+espn,143,Running Alley Oop Layup Shot,shot
+espn,144,Driving Floating Jump Shot,shot
+espn,145,Driving Floating Bank Jump Shot,shot
+espn,146,Running Pullup Jump Shot,shot
+espn,147,Step Back Bank Jump Shot,shot
+espn,148,Turnaround Fadeaway Bank Jump Shot,shot
+espn,149,Running Alley Oop Dunk Shot,shot
+espn,150,Tip Dunk Shot,shot
+espn,151,Cutting Dunk Shot,shot
+espn,152,Driving Reverse Dunk Shot,shot
+espn,153,Running Reverse Dunk Shot,shot
+espn,155,Defensive Rebound,rebound
+espn,156,Offensive Rebound,rebound
+espn,157,Free Throw - Flagrant 1 of 3,free_throw
+espn,165,Free Throw - Flagrant 2 of 3,free_throw
+espn,166,Free Throw - Flagrant 3 of 3,free_throw
+espn,213,Challenge,ignore
+espn,214,Coach's Challenge (Supported),ignore
+espn,215,Coach's Challenge (Overturned),ignore
+espn,216,Coach's Challenge (Stands),ignore
+espn,257,Transition Take Foul,foul
+espn,277,Coach's Challenge (replaycenter),ignore
+espn,278,Ref-Initiated Review (Supported),ignore
+espn,279,Ref-Initiated Review (Overturned),ignore
+espn,280,Ref-Initiated Review (Stands),ignore
+espn,282,Heave Jump Shot,shot
+espn,402,End Game,ignore
+espn,412,End Period,ignore
+espn,517,Ejection,ignore
+espn,584,Substitution,ignore
+espn,615,Jumpball,ignore
+nba,foul:double technical,foul:double technical,ignore
+nba,foul:double personal,foul:double personal,ignore
+espn,11,Jump Ball,ignore
+espn,15,No Timeout,ignore
+espn,19,Official Timeout,ignore
+espn,283,Reset Timeout,ignore
+espn,37,Clear Path Foul,foul
+espn,75,Jumpball Violation Turnover,turnover
+espn,107,Free Throw - Clear Path 1 of 2,free_throw
+espn,108,Free Throw - Clear Path 2 of 2,free_throw
+espn,0,Not Available,ignore
+espn,13,Double Lane,ignore
+espn,25,Excess Timeout Technical,ignore
+espn,36,Double Personal Foul,ignore
+espn,46,No Foul,ignore
+espn,47,Too Many Players Technical,ignore
+espn,77,Illegal Assist Turnover,turnover
+espn,80,Punched Ball Turnover,turnover
+espn,82,Basket from Below Turnover,turnover
+espn,88,Excess Timeout Turnover,turnover
+espn,89,Too Many Players Turnover,turnover
+espn,91,No Shot (Default Shot),shot
+espn,206,5-Second Back to the Basket Turnover,turnover

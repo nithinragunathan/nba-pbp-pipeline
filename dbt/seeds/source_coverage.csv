@@ -1,0 +1,9 @@
+league,source,status,notes
+nba,nba,covered,cdn.nba.com liveData via a community mirror; NBA only
+nba,espn,covered,site.api.espn.com summary plays[]
+wnba,espn,covered,verified 2026-10-16 with a live summary call
+ncaam,espn,covered,verified 2026-10-16; two 20-minute halves
+ncaaw,espn,covered,verified 2026-10-16
+wnba,nba,none,no public API for the WNBA's official stats; the WNBA is ESPN only
+ncaam,nba,none,NBA feeds do not cover college
+ncaaw,nba,none,NBA feeds do not cover college

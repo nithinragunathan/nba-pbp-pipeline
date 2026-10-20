@@ -1,0 +1,31 @@
+flowchart LR
+    subgraph sources[Sources]
+        NBA["NBA Stats<br/>cdn liveData (community mirror)"]
+        ESPN["ESPN site API<br/>(live, NBA + WNBA)"]
+    end
+    subgraph prefect["Prefect flow: pbp_flow (targets = league:season:team)"]
+        subgraph sub["subflow extract_league, one per target"]
+            EX["per-game tasks: ESPN<br/>per-season task: NBA mirror<br/>retries + backoff"]
+        end
+        LAND["landing/<br/>source= / league= / season="]
+        BR[("bronze.raw_payloads<br/>append-only, payload_hash")]
+        EX --> LAND --> BR
+    end
+    NBA --> EX
+    ESPN --> EX
+    subgraph dbt["dbt build, once per run, all leagues"]
+        BASE["staging: base_*<br/>typed rows per source"]
+        XW["crosswalks<br/>game_xwalk, player_xwalk (league-aware)"]
+        STG["stg_nba + stg_espn<br/>= stg_events"]
+        MATCH["int_event_matches<br/>score anchors + alignment"]
+        GOLD["marts<br/>fct_shots, fct_rebounds,<br/>fct_possessions"]
+        RPT["rpt_source_agreement<br/>rpt_disagreements"]
+        HIST["bronze_payload_history<br/>(view)"]
+        SEED["seeds: dim_team, event_type_map,<br/>source_coverage, known_data_issues"]
+        BASE --> XW --> STG --> MATCH --> GOLD --> RPT
+        BASE --> STG
+        SEED --> STG
+    end
+    BR --> BASE
+    BR --> HIST
+    RPT --> REP["reports/reconciliation.md<br/>+ Prefect artifact"]

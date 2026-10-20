@@ -1,0 +1,10 @@
+pbp_unify:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # Relative to the dbt/ directory; the Makefile and the Prefect flow run dbt from there.
+      path: "{{ env_var('PBP_DB_PATH', '../data/pbp.duckdb') }}"
+      # One model at a time: parsing a full league season of payloads (base_espn_plays,
+      # base_nba_actions) peaks near 13 GB, and several at once exceed DuckDB's memory limit.
+      threads: 1

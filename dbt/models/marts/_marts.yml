@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: fct_shots
+    description: >
+      One row per real shot or free throw (shot_id = cluster_id). Each value comes from NBA when
+      NBA has it, otherwise ESPN, and *_source says which. agree_* flags are null when only one
+      source recorded the shot.
+    columns:
+      - name: shot_id
+        data_tests: [unique, not_null]
+      - name: possession_id
+        description: >
+          From the NBA feed's possessions. Required for every event NBA recorded; an event only
+          ESPN recorded takes its team's possession at that clock when there is one (none in an
+          ESPN-only game such as a Cup final, or for a technical free throw before a period's first
+          possession). A technical free throw shot before a period's first possession has none in
+          either feed.
+        data_tests:
+          - not_null:
+              config:
+                where: "nba_event_id is not null and not (is_free_throw and nba_description ilike '%technical%')"
+          - relationships: {arguments: {to: ref('fct_possessions'), field: possession_id}}
+      - name: player_key
+        data_tests:
+          - not_null
+          - relationships: {arguments: {to: ref('player_xwalk'), field: player_key}}
+      - name: team_key
+        data_tests:
+          - not_null
+          - relationships: {arguments: {to: ref('dim_team'), field: team_key}}
+      - name: is_made
+        data_tests: [not_null]
+      - name: shot_value
+        data_tests:
+          - accepted_values: {arguments: {values: [1, 2, 3], quote: false}}
+      - name: n_sources
+        data_tests:
+          - accepted_values: {arguments: {values: [1, 2], quote: false}}
+
+  - name: fct_rebounds
+    description: One row per real rebound (rebound_id = cluster_id), linked to the miss it followed.
+    columns:
+      - name: rebound_id
+        data_tests: [unique, not_null]
+      - name: related_shot_id
+        data_tests:
+          - relationships: {arguments: {to: ref('fct_shots'), field: shot_id}}
+      - name: possession_id
+        description: >
+          From the NBA feed's possessions. Required for every event NBA recorded; an event only
+          ESPN recorded takes its team's possession at that clock when there is one (none in an
+          ESPN-only game such as a Cup final, or for a technical free throw before a period's first
+          possession).
+        data_tests:
+          - not_null: {config: {where: "nba_event_id is not null"}}
+          - relationships: {arguments: {to: ref('fct_possessions'), field: possession_id}}
+      - name: rebound_type
+        data_tests:
+          - not_null
+          - accepted_values: {arguments: {values: [offensive, defensive]}}
+
+  - name: fct_possessions
+    description: One row per possession; boundaries from the NBA feed's possession field, or from ESPN's events where ESPN is the only feed (boundary_source).
+    columns:
+      - name: possession_id
+        data_tests: [unique, not_null]
+      - name: offense_team_key
+        data_tests:
+          - not_null
+          - relationships: {arguments: {to: ref('dim_team'), field: team_key}}
+
+  - name: rpt_source_agreement
+    description: NBA vs ESPN agreement per game and event class, plus an 'all' row per game.
+    data_tests:
+      - unique_combination: {arguments: {columns: [game_key, source_a, source_b, event_class]}}
+
+  - name: rpt_disagreements
+    description: Every cluster where the sources disagree or only one source has the event.
+
+  - name: rpt_coverage
+    description: League x source coverage and the number of games loaded from each.

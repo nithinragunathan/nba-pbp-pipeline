@@ -1,0 +1,49 @@
+name: pbp_unify
+version: "1.0.0"
+config-version: 2
+profile: pbp_unify
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+vars:
+  # Largest clock gap (seconds) the matcher will accept between two sources' versions of one event.
+  match_max_clock_diff_s: 12
+  # Allowed |NBA - ESPN| difference in shot or free-throw attempts per team per game.
+  shot_count_tolerance: 2
+
+models:
+  pbp_unify:
+    # Full tables by default. With --vars '{leagues: [wnba]}' every model is incremental and only
+    # the selected leagues' rows are replaced (macros/league_scope.sql).
+    +materialized: "{{ 'incremental' if var('leagues', none) else 'table' }}"
+    +incremental_strategy: append
+    +on_schema_change: sync_all_columns
+    +pre-hook: "{{ delete_league_slice() }}"
+    staging:
+      +schema: staging
+    crosswalks:
+      +schema: crosswalks
+    intermediate:
+      +schema: intermediate
+    marts:
+      +schema: marts
+
+seeds:
+  pbp_unify:
+    +schema: ref
+    dim_team:
+      +column_types:
+        nba_team_id: varchar
+        espn_team_id: varchar
+    event_type_map:
+      +column_types:
+        source_type: varchar
+
+data_tests:
+  pbp_unify:
+    # In a league-scoped build, generic tests check only the selected leagues' rows (singular
+    # tests read their models through scoped()). Inline Jinja: macros are not available here.
+    +where: '{{ "league in (''" ~ (var("leagues") | join("'', ''")) ~ "'')" if var("leagues", none) else "true" }}'

@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: Append-only raw payloads written by src/pbp/load_bronze.py.
+    tables:
+      - name: raw_payloads
+        description: One row per (source, game, payload version). Never updated in place.
+        columns:
+          - name: payload_hash
+            description: sha256 of the stat-bearing part of the payload.
+            data_tests: [not_null]

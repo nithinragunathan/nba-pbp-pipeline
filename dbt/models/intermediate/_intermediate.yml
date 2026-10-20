@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: int_event_matches
+    description: >
+      One row per source event with the cluster it belongs to. A cluster is the set of source
+      rows that describe one real event. NBA is the pivot, so cluster ids are built from NBA
+      action numbers where NBA has the event and stay the same across reruns.
+    config:
+      match_max_clock_diff_s: "{{ var('match_max_clock_diff_s') }}"
+      leagues: "{{ var('leagues', []) | join(',') }}"
+      # Always a full table: dbt-duckdb's incremental path for Python models fails on a local
+      # database (it cannot see the temp table it creates), so the model keeps the other
+      # leagues' rows itself in a league-scoped build.
+      materialized: table
+    columns:
+      - name: cluster_id
+        data_tests: [not_null]
+      - name: source
+        data_tests:
+          - accepted_values: {arguments: {values: [nba, espn]}}
+      - name: source_event_id
+        data_tests: [not_null]
+      - name: match_method
+        description: "score_anchor (made shot or free throw paired on the score), seq_align, or singleton"
+        data_tests:
+          - accepted_values: {arguments: {values: [score_anchor, seq_align, singleton]}}
+      - name: clock_diff
+        description: ESPN clock minus NBA clock for the cluster, in tenths of a second. Null for singletons.
+    data_tests:
+      - unique_combination: {arguments: {columns: [source, source_event_id]}}

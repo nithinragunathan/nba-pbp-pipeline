@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: game_xwalk
+    description: Canonical game key with each source's game id. One row per real game.
+    columns:
+      - name: game_key
+        description: "{league}_{ET date}_{away}_at_{home}, e.g. nba_20251022_WAS_at_MIL"
+        data_tests: [unique, not_null]
+      - name: nba_game_id
+        data_tests: [unique]
+      - name: espn_game_id
+        data_tests: [unique]
+      - name: home_team_key
+        data_tests:
+          - not_null
+          - relationships: {arguments: {to: ref('dim_team'), field: team_key}}
+      - name: away_team_key
+        data_tests:
+          - not_null
+          - relationships: {arguments: {to: ref('dim_team'), field: team_key}}
+
+  - name: player_xwalk
+    description: >
+      One row per real player with each source's id. Players are matched within a game and team,
+      so two players with the same name on different teams never collide.
+    columns:
+      - name: player_key
+        data_tests: [unique, not_null]
+      - name: nba_person_id
+        data_tests: [unique]
+      - name: espn_athlete_id
+        data_tests: [unique]
+      - name: match_method
+        data_tests:
+          - accepted_values: {arguments: {values: [short_name, last_name, name_tokens, nba_only, espn_only]}}
