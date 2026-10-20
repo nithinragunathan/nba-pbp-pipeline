@@ -19,7 +19,7 @@ and its review is in [`docs/decisions.md`](docs/decisions.md).
 | Disagreements to review | 293 NBA clusters in 169 games, in `marts.rpt_disagreements`. The Wizards' games are checked case by case and the rest by pattern in [`docs/hand_checks.md`](docs/hand_checks.md) |
 | Made-shot points = final score | every game, every source, and in the unified `fct_shots` and `fct_possessions` (each is a dbt test), apart from 17 reviewed ESPN errors in 12 games listed in `seeds/known_data_issues.csv` |
 | Matcher, real data | **7** made baskets left unpaired (in 2 games), all of them shots ESPN doesn't have, so none is a matcher miss; score-only anchors leave 167 (in 73 games), the clock window 13 (in 7) |
-| `dbt build` | 91 nodes (23 models, 4 seeds, 64 tests) over both leagues, all green: about 3 minutes for the full build, under a minute for `make team` |
+| `dbt build` | 91 nodes (23 models, 4 seeds, 64 tests) over both leagues, all green, in 36 seconds on a MacBook Pro |
 
 Full numbers: [`reports/matcher_evaluation.md`](reports/matcher_evaluation.md) (NBA games) and
 [`reports/reconciliation.md`](reports/reconciliation.md) (per league). Both are regenerated on each run.
@@ -35,10 +35,12 @@ make team     # the same for one team per league, by default the Wizards and the
 Everything runs locally on DuckDB: no cloud account, credentials or cost. Needs Python 3.11+ and
 internet access. `make all` is the build behind the numbers above. It downloads about 20 MB of NBA
 mirror data, makes about 1,600 ESPN API calls and builds a `data/pbp.duckdb` of about 2 GB. It
-needs about 4 GB of disk, peaks near 12 GB of memory in `dbt build`, and takes about 10-25 minutes
-depending mostly on the ESPN downloads. `make team` takes about 2 minutes and fits any laptop.
-Dependencies install from `requirements.lock`, which pins every package. `make clean` drops dbt's output and the landing
-files but keeps bronze, the only record of payload history; `make clean-all` deletes everything.
+needs about 4 GB of disk and peaks near 12 GB of memory in `dbt build`. From a fresh clone it runs
+in about 3 minutes on a MacBook Pro, most of it ESPN downloads, so a slower connection takes
+longer. `make team` builds a smaller version in a couple of minutes on any laptop. Dependencies
+install from `requirements.lock`, which pins every package. `make clean` drops dbt's output and
+the landing files but keeps bronze, the only record of payload history; `make clean-all` deletes
+everything.
 Other targets:
 
 | | |
@@ -356,14 +358,14 @@ of scope: NBA logs blocks and steals as separate actions (mapped `ignore`) and E
 a second participant. The next step is attributes on the parent event (`assist_player_key` on
 shots, `steal_player_key` on turnovers, `block_player_key` on missed shots).
 
-**Partitioning and scale.** Play-by-play is small: about 500k events per source per NBA season.
-The one pinch point is memory: parsing a season of raw JSON payloads in staging peaks near 12 GB
-in DuckDB, so dbt runs one model at a time (`threads: 1`), which still builds both leagues in
-a few minutes (about 1 on a 24 GB Mac, about 3 on a 15 GB Linux machine). The unit of work is the game: extract, match and rebuild one game at a time, with no
-cross-game joins. Landing files use hive-style folders (`source=/league=/season=`), which DuckDB
-reads natively. In a warehouse I'd partition silver and gold by league and season and cluster by
-game. Real tracking data (about 800k rows per game at 25 Hz) is where partitioning by game date
-becomes essential.
+**Partitioning and scale.** Play-by-play is small: about 500k events per source per NBA season. The
+one pinch point is memory: parsing a season of raw JSON payloads in staging peaks near 12 GB in
+DuckDB, so dbt runs one model at a time (`threads: 1`), which still builds both leagues in 36
+seconds on a MacBook Pro. The unit of work is the game: extract, match and rebuild one game at a
+time, with no cross-game joins. Landing files use hive-style folders (`source=/league=/season=`),
+which DuckDB reads natively. In a warehouse I'd partition silver and gold by league and season and
+cluster by game. Real tracking data (about 800k rows per game at 25 Hz) is where partitioning by
+game date becomes essential.
 
 **League-scoped builds.** Leagues never share a game, so each league is a slice that can be
 rebuilt on its own. `dbt build --vars '{leagues: [wnba]}'` (or `make dbt LEAGUES=wnba`) turns
