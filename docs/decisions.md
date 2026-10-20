@@ -51,8 +51,8 @@ carries over in structure: layers, tests, seeds, snapshot and macros.
 next day as overkill); Postgres; plain Python without dbt.
 
 **Evaluation:**
-- Holds up: the league-wide build (1,560 games) runs end to end in about 6½ minutes on a 24 GB
-  laptop (about 25 minutes on a 15 GB cloud machine, almost all of it ESPN downloads).
+- Holds up: the league-wide build (1,560 games) runs end to end from a fresh clone in about 3
+  minutes on a MacBook Pro, most of it ESPN downloads; `dbt build` takes 36 seconds.
 - The SQL is tied to DuckDB's dialect (`->>`, `from_json`, `unnest`, `try_cast`, `qualify`);
   porting is roughly 150 mechanical edits.
 - Single-node memory was the first limit the league-wide run hit (see D18). A warehouse removes
@@ -255,7 +255,7 @@ node visible in Prefect); concurrent subflows; a Prefect deployment with a sched
   runs dbt through its Python API and reports every model, test, seed and snapshot to Prefect
   with its own status, logs and lineage. It is the idiomatic integration for a team running dbt
   under Prefect; the cost is a pre-1.0 dependency whose API still moves.
-- Running the two targets concurrently would save at most the shorter subflow (about 1½ minutes)
+- Running the two targets concurrently would save at most the shorter subflow (about 20 seconds)
   and only on a full backfill: nightly runs extract a handful of games. Both subflows call ESPN,
   so it would also double concurrent load on an undocumented API, and it complicates failure
   handling. Rejected.
@@ -586,9 +586,9 @@ league; scoping by game or date.
 **Evaluation:**
 - Holds up: it works, and a scoped build was once checked table by table against a full build by
   content hash. Automatic scoping in the flow is convenient.
-- The benefit is small at this scale: a full league-wide build is about 2 minutes, a WNBA-only one
-  saves about 1½, and nightly runs touch both leagues. Scoping by game or date (rebuild only games
-  whose payload changed) is what would pay off.
+- The benefit is small at this scale: a full league-wide `dbt build` takes 36 seconds on a MacBook
+  Pro, so a WNBA-only one saves seconds, and nightly runs touch both leagues. Scoping by game or
+  date (rebuild only games whose payload changed) is what would pay off.
 - The convention is not enforced: a model must read through `scoped()` or opt out explicitly. A
   model that forgets would duplicate other leagues' rows in scoped builds while passing full
   builds.
@@ -639,7 +639,8 @@ models; four threads and the risk; parsing JSON before bronze.
 after `bronze_latest` becomes a view (D9) before considering more threads.
 
 **Outcome:** `fct_rebounds` builds in 0.4 s instead of 71 s and the whole `dbt build` in about
-50 s instead of about 2 minutes. Peak memory is unchanged at about 12 GB, so `threads: 1` stays.
+50 s instead of about 2 minutes (36 s on a MacBook Pro from a fresh clone). Peak memory is
+unchanged at about 12 GB, so `threads: 1` stays.
 
 ## D19. Tests encode basketball; known source errors live in a seed
 
